@@ -3,11 +3,48 @@ import Row from 'react-bootstrap/Row';
 import Carousel from 'react-bootstrap/Carousel';
 import Container from 'react-bootstrap/Container';
 import 'holderjs';
+import React, { useEffect, useState } from 'react';
 
+const axios = require('axios').default;
 
 function HomePage(){
+   
+  const[articles, getArticles] = useState('');
+  
+  useEffect(()=>{
+    getAllArticles();
+  },[]);
+
+  // HERE IS THE PROBLEM.... i think axios is being called and not executed in time for console.log to get the data
+  // console.log works when data is fetched 
+  async function getAllArticles(){
+    await axios.get('/articles').then((response)=>{
+       const allArticles = response.data;
+       getArticles(allArticles);
+    })
+    .catch(error=>console.error(`Error: $(error)`));
+    console.log("hi");
+    
+  }
+  const myArticles = JSON.parse(JSON.stringify(articles));
+    
+  try{
+    console.log(myArticles[1].name);
+  }catch(error){
+    console.log(error);
+  }
+ 
+
+    // var myArticles = JSON.parse(articles);  
+
+    // for(var i=0; i< myArticles.length; i++){
+    //     console.log(myArticles[i]);
+    // }
+    
     return(
+     
         <>
+
         <Carousel>
       <Carousel.Item>
         <img
@@ -45,7 +82,7 @@ function HomePage(){
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
-
+    
     <Container>
       <div className="text-center pt-5 pb-2">Articles</div>
       <Row className="text-center p-5">
@@ -69,7 +106,12 @@ function HomePage(){
     </Container>
     </>
     );
+   
 }
+
+
+
+
 
 
 export default HomePage;

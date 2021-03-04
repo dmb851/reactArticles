@@ -53,3 +53,32 @@ app.post('/insert', (req, res) => {
 
     res.send('Welcome to the backend!')
 })
+
+app.get('/articles', (req,res) => {
+  let db = new sqlite3.Database('articles.db', (err) => {
+    if (err) {
+      console.error(err.message);
+    }else{
+        console.log('Connected to my database.');
+    }
+  });
+  
+  sql=`SELECT name, summary, details FROM article`;
+  db.all(sql, [], (err, data) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    res.json(data);
+    console.log('hitme');
+  });
+
+  
+  db.close((err) => {
+  if (err) {
+      console.error(err.message);
+  }
+  console.log('Close the database connection.');
+  });
+
+
+});
