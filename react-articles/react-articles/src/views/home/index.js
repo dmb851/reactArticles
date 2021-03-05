@@ -9,7 +9,9 @@ const axios = require('axios').default;
 
 function HomePage(){
    
-  const[articles, getArticles] = useState('');
+  const initialValue = [
+    { id: 0, name:"test", summary:"", details:""}];
+  const[articles, getArticles] = useState(initialValue);
   
   useEffect(()=>{
     getAllArticles();
@@ -29,7 +31,10 @@ function HomePage(){
   const myArticles = JSON.parse(JSON.stringify(articles));
     
   try{
-    console.log(myArticles[1].name);
+    console.log(myArticles[0].name);
+    for(var i=0; i< myArticles.length; i++){
+      console.log(myArticles[i].name);
+  }
   }catch(error){
     console.log(error);
   }
@@ -37,9 +42,8 @@ function HomePage(){
 
     // var myArticles = JSON.parse(articles);  
 
-    // for(var i=0; i< myArticles.length; i++){
-    //     console.log(myArticles[i]);
-    // }
+    
+
     
     return(
      
@@ -82,6 +86,11 @@ function HomePage(){
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
+
+      
+    <ArticleList list={myArticles}></ArticleList>
+
+
     
     <Container>
       <div className="text-center pt-5 pb-2">Articles</div>
@@ -105,10 +114,12 @@ function HomePage(){
 
     </Container>
     </>
-    );
-   
+    );   
 }
 
+const ArticleList = ({list}) =>
+  list.map(item=>
+    (<h1>{item.name}</h1>));
 
 
 
